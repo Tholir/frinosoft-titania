@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  characters    Character[]
+  homebrews     HomebrewContent[]
+  aiConfigs     AIProviderConfig[]
+  sessions      Session[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+  createdAt    DateTime @default(now())
+}
+
+model Character {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  level        Int      @default(1)
+  xp           Int      @default(0)
+  currentHP    Int
+  maxHP        Int
+  tempHP       Int      @default(0)
+  race         Json
+  classes      Json
+  background   Json
+  abilities    Json
+  savingThrows Json
+  skills       Json
+  spellcasting Json?
+  inventory    Json
+  features     Json
+  conditions   String[]
+  deathSaves   Json
+  notes        String?
+  allies       String[]
+  appearance   String?
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  versions     CharacterVersion[]
+}
+
+model CharacterVersion {
+  id          String   @id @default(cuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  version     Int
+  snapshot    Json
+  createdAt   DateTime @default(now())
+}
+
+model Campaign {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  characters String[]
+  events    Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HomebrewContent {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  name        String
+  description String
+  content     Json
+  source      String   @default("homebrew")
+  balanceScore Float?
+  imageUrl    String?
+  published   Boolean  @default(false)
+  rating      Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CompendiumEntry {
+  id        String   @id @default(cuid())
+  type      String
+  name      String
+  source    String
+  content   Json
+  searchText String
+  createdAt DateTime @default(now())
+}
+
+model AIProviderConfig {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider  String
+  apiKeyEnc String
+  model     String?
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GeneratedAsset {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  prompt    String
+  url       String
+  createdAt DateTime @default(now())
+}
+
+model SharedHomebrew {
+  id          String   @id @default(cuid())
+  homebrewId  String
+  rating      Float
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+}

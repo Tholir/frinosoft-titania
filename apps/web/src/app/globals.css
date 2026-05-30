@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-parchment: #f4e4bc;
+  --color-parchment-dark: #d4c49c;
+  --color-ink: #2c1810;
+  --color-ink-light: #5c4030;
+  --color-gold: #c9a227;
+  --color-gold-light: #e8c547;
+  --color-crimson: #8b0000;
+  --color-crimson-light: #b22222;
+  --color-azure: #1e3a5f;
+  --color-azure-light: #2e5a8f;
+
+  --font-display: "Cinzel", Georgia, serif;
+  --font-body: "Crimson Text", Georgia, serif;
+  --font-mono: "Courier Prime", monospace;
+}
+
+body {
+  background-color: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+.dark body {
+  background-color: #1a1209;
+  color: var(--color-parchment);
+}
