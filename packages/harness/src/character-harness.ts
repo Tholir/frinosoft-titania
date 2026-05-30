@@ -1,13 +1,13 @@
 // ─── RulesEngineSkill ───────────────────────────────────────────────────────
 // Central rule engine for D&D 5e SRD. All rule calculations go through here.
 
-import type { AbilityName, AbilityScores, Character, CharacterClass } from "./types.js";
+import type { AbilityName, AbilityScores, Character, CharacterClass, ClassEntry } from "./types.js";
 import { abilityModifier } from "./types.js";
 
 export interface RulesEngineSkill {
   calculateModifier(score: number): number;
   calculateAC(character: Character): number;
-  calculateHP(classes: CharacterClass[], level: number, conMod: number): number;
+  calculateHP(classes: ClassEntry[], totalLevel: number, conMod: number): number;
   calculateProficiencyBonus(level: number): number;
   calculateSkillBonus(skillName: string, character: Character): number;
   calculateSaveDC(spellcastingAbility: AbilityName, proficiencyBonus: number): number;
@@ -60,7 +60,7 @@ export const rulesEngine: RulesEngineSkill = {
     return ac;
   },
 
-  calculateHP(classes: CharacterClass[], totalLevel: number, conMod: number): number {
+  calculateHP(classes: ClassEntry[], totalLevel: number, conMod: number): number {
     const firstClass = classes[0];
     if (!firstClass) return 10 + conMod;
 

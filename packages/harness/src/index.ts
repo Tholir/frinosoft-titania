@@ -4,6 +4,10 @@
 
 import type { Character } from "./types.js";
 
+// Re-export types
+export type { Character, CharacterDraft, AbilityScores, AbilityName, Race, CharacterClass, ClassEntry, Spellcasting, Background, SkillProficiency, SavingThrow, InventoryItem, Currency, DeathSaves, Condition } from "./types.js";
+export { abilityModifier } from "./types.js";
+
 export interface CharacterHarness {
   createCharacter(options: CharacterCreationOptions): Promise<Character>;
   getCharacter(id: string): Promise<Character | null>;
@@ -22,7 +26,7 @@ export interface CharacterCreationOptions {
   backgroundId: string;
   abilities: Abilities;
   statRollMethod: "standard_array" | "point_buy" | "roll";
-  rolls?: number[]; // only required if statRollMethod === "roll"
+  rolls?: number[];
 }
 
 export interface Abilities {
@@ -37,8 +41,6 @@ export interface Abilities {
 export type ExportFormat = "pdf" | "json" | "foundry_vtt" | "roll20" | "markdown" | "png";
 
 // ─── Skill Interface Contract ───────────────────────────────────────────────
-// All skills MUST conform to this contract.
-// The Harness never talks to skills directly except through this interface.
 
 export interface SkillContext {
   userId?: string;
@@ -52,9 +54,6 @@ export interface SkillResult<T = unknown> {
   error?: string;
   warnings?: string[];
 }
-
-// ─── Skill Registry ──────────────────────────────────────────────────────────
-// Each domain task has exactly ONE skill responsible for it.
 
 export type SkillName =
   | "CharacterCreation"
@@ -72,7 +71,7 @@ export type SkillName =
 
 export interface Skill {
   readonly name: SkillName;
-  execute<T>(ctx: SkillContext, input: unknown): Promise<SkillResult<T>>;
+  execute(ctx: SkillContext, input: unknown): Promise<SkillResult<unknown>>;
 }
 
 // ─── Harness Errors ─────────────────────────────────────────────────────────
@@ -99,3 +98,8 @@ export class ValidationError extends HarnessError {
     super(message, "Validation", "VALIDATION_ERROR");
   }
 }
+
+// ─── Rules Engine ────────────────────────────────────────────────────────────
+// Exported from character-harness.ts for convenience
+
+export { rulesEngine, type RulesEngineSkill } from "./character-harness.js";

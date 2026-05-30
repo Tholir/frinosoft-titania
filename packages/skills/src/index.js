@@ -1,8 +1,6 @@
 // ─── Skills Index ─────────────────────────────────────────────────────────────
 // Re-exports all 12 skills for convenient imports.
-
-export { rulesEngine, type RulesEngineSkill } from "@frinosoft/harness";
-
+export { rulesEngine } from "@frinosoft/harness";
 export { characterCreationSkill } from "./character-creation/index.js";
 export { rulesEngineSkill } from "./rules-engine/index.js";
 export { aiIntegrationSkill } from "./ai-integration/index.js";

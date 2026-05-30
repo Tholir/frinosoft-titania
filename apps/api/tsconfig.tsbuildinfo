@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/routers/ai.ts","./src/routers/character.ts","./src/routers/compendium.ts","./src/routers/homebrew.ts","./src/routers/index.ts","./src/routers/narrator.ts"],"errors":true,"version":"5.9.3"}

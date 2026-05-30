@@ -31,7 +31,7 @@ export const characterRouter = t.router({
         { ...input }
       );
       if (!result.ok) throw new TRPCError({ code: "BAD_REQUEST", message: result.error });
-      return { id: `char_${Date.now()}`, ...result.data };
+      return { id: `char_${Date.now()}`, character: result.data };
     }),
 
   getById: t.procedure.input(z.object({ id: z.string() })).query(({ input }) => {
